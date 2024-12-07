@@ -33,18 +33,37 @@ export default function GameplayPage() {
           {/* Left Game Section */}
           <div className="flex-1">
             {/* Participants Circle */}
-            <div className="relative h-[500px]">
+            <div className="relative h-[500px] flex items-center justify-center">
+              {/* Center Bid Circle */}
+              <div className="absolute w-32 h-32 rounded-full bg-zinc-900/80 border-2 border-[#98C23D] flex items-center justify-center z-10">
+                <div className="text-center">
+                  <div className="text-sm text-zinc-400">Current Bid</div>
+                  <div className="text-2xl text-[#98C23D] font-bold">12</div>
+                </div>
+              </div>
+
               {participants.map((player, index) => {
                 const angle = (index * 360) / participants.length;
-                const radius = 200; // Adjust based on your needs
-                const x = Math.cos((angle * Math.PI) / 180) * radius + radius;
-                const y = Math.sin((angle * Math.PI) / 180) * radius + radius;
+                // Dynamically adjust radius based on participant count
+                const baseRadius = 150;
+                const radius = participants.length <= 4 ? baseRadius : baseRadius * (4 / participants.length);
+                
+                // Dynamically adjust circle size based on participant count
+                const circleSize = participants.length <= 4 ? 80 : Math.max(50, 80 * (4 / participants.length));
+                
+                const x = Math.cos((angle * Math.PI) / 180) * radius;
+                const y = Math.sin((angle * Math.PI) / 180) * radius;
 
                 return (
                   <div
                     key={player.id}
-                    className="absolute w-20 h-20 transform -translate-x-1/2 -translate-y-1/2"
-                    style={{ left: x, top: y }}
+                    className="absolute transform -translate-x-1/2 -translate-y-1/2"
+                    style={{ 
+                      left: `calc(50% + ${x}px)`, 
+                      top: `calc(50% + ${y}px)`,
+                      width: `${circleSize}px`,
+                      height: `${circleSize}px`
+                    }}
                   >
                     <div className="w-full h-full rounded-full bg-[#98C23D]/20 border-2 border-[#98C23D] flex items-center justify-center hover:scale-110 transition-transform">
                       <span className="text-sm">{player.name}</span>

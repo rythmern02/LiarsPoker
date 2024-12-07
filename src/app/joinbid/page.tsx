@@ -1,17 +1,38 @@
-import { Press_Start_2P } from 'next/font/google'
+import { Press_Start_2P } from "next/font/google";
 
 const pixelFont = Press_Start_2P({
-  weight: '400',
-  subsets: ['latin'],
-  variable: '--font-pixel'
-})
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-pixel",
+});
 
 // Sample game data (replace with your actual data)
 const games = [
-  { id: 1, name: "High Rollers Table", players: 4, maxPlayers: 6, buyIn: "1000", status: "In Progress" },
-  { id: 2, name: "Casual Players", players: 2, maxPlayers: 4, buyIn: "500", status: "Waiting" },
-  { id: 3, name: "Pro League", players: 5, maxPlayers: 6, buyIn: "2000", status: "In Progress" },
-]
+  {
+    id: 1,
+    name: "High Rollers Table",
+    players: 4,
+    maxPlayers: 6,
+    buyIn: "1000",
+    status: "In Progress",
+  },
+  {
+    id: 2,
+    name: "Casual Players",
+    players: 2,
+    maxPlayers: 4,
+    buyIn: "500",
+    status: "Waiting",
+  },
+  {
+    id: 3,
+    name: "Pro League",
+    players: 5,
+    maxPlayers: 6,
+    buyIn: "2000",
+    status: "In Progress",
+  },
+];
 
 export default function JoinBid() {
   return (
@@ -31,7 +52,7 @@ export default function JoinBid() {
         {/* Games List */}
         <div className="space-y-6">
           {games.map((game) => (
-            <div 
+            <div
               key={game.id}
               className="group relative bg-gradient-to-r from-zinc-900 to-zinc-800 rounded-xl p-6 hover:scale-[1.02] transition-all duration-300 border border-zinc-800 hover:border-[#98C23D]/50"
             >
@@ -54,37 +75,46 @@ export default function JoinBid() {
                       </span>
                     </div>
                     <div className="text-zinc-400">
-                      Buy-in: <span className="text-[#98C23D]">${game.buyIn}</span>
+                      Buy-in:{" "}
+                      <span className="text-[#98C23D]">${game.buyIn}</span>
                     </div>
                     <div className="text-zinc-400">
-                      Status: <span className="text-[#98C23D]">{game.status}</span>
+                      Status:{" "}
+                      <span className="text-[#98C23D]">{game.status}</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Join Button */}
-                <button 
+                <button
                   className="bg-[#98C23D] hover:bg-[#88b22d] text-black px-6 py-3 rounded-lg font-medium 
-                           transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#98C23D]/20
-                           flex items-center gap-2 group"
+                             transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#98C23D]/20
+                             flex items-center gap-2 group"
                 >
                   <span>Join Table</span>
-                  <svg 
-                    className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" 
-                    fill="none" 
-                    viewBox="0 0 24 24" 
+                  <svg
+                    className="w-4 h-4 transform group-hover:translate-x-1 transition-transform"
+                    fill="none"
+                    viewBox="0 0 24 24"
                     stroke="currentColor"
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
                   </svg>
                 </button>
               </div>
 
               {/* Progress Bar */}
               <div className="mt-4 h-1 bg-zinc-800 rounded-full overflow-hidden">
-                <div 
+                <div
                   className="h-full bg-[#98C23D] transition-all duration-300"
-                  style={{ width: `${(game.players / game.maxPlayers) * 100}%` }}
+                  style={{
+                    width: `${(game.players / game.maxPlayers) * 100}%`,
+                  }}
                 />
               </div>
             </div>
@@ -106,5 +136,5 @@ export default function JoinBid() {
         </div>
       </div>
     </div>
-  )
+  );
 }

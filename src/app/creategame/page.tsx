@@ -1,14 +1,22 @@
-import { Press_Start_2P } from 'next/font/google'
+import { Press_Start_2P } from "next/font/google";
 
 const pixelFont = Press_Start_2P({
-  weight: '400',
-  subsets: ['latin'],
-  variable: '--font-pixel'
-})
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-pixel",
+});
 
 // Floating number component for background effect
-const FloatingNumber = ({ children, className }: { children: string, className: string }) => (
-  <div className={`absolute font-[var(--font-minecraft)] text-4xl text-gray-800/10 animate-float ${className}`}>
+const FloatingNumber = ({
+  children,
+  className,
+}: {
+  children: string;
+  className: string;
+}) => (
+  <div
+    className={`absolute font-[var(--font-minecraft)] text-4xl text-gray-800/10 animate-float ${className}`}
+  >
     {children}
   </div>
 );
@@ -18,13 +26,21 @@ export default function CreateGame() {
     <div className={`min-h-screen bg-[#0A0A0A] ${pixelFont.variable}`}>
       {/* Background Elements */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.03)_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000,transparent)]" />
-      
+
       {/* Floating Numbers Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <FloatingNumber className="top-[10%] left-[5%] animate-float-slow">A</FloatingNumber>
-        <FloatingNumber className="top-[45%] left-[15%] animate-float-delayed">K</FloatingNumber>
-        <FloatingNumber className="top-[75%] left-[8%] animate-float">Q</FloatingNumber>
-        <FloatingNumber className="top-[20%] right-[12%] animate-float-slow">J</FloatingNumber>
+        <FloatingNumber className="top-[10%] left-[5%] animate-float-slow">
+          A
+        </FloatingNumber>
+        <FloatingNumber className="top-[45%] left-[15%] animate-float-delayed">
+          K
+        </FloatingNumber>
+        <FloatingNumber className="top-[75%] left-[8%] animate-float">
+          Q
+        </FloatingNumber>
+        <FloatingNumber className="top-[20%] right-[12%] animate-float-slow">
+          J
+        </FloatingNumber>
       </div>
 
       <div className="relative z-10 p-8 max-w-4xl mx-auto">
@@ -32,18 +48,18 @@ export default function CreateGame() {
         <h1 className="text-4xl md:text-6xl text-white font-[var(--font-pixel)] mb-4 animate-fade-in">
           Create a new Liar's Poker
         </h1>
-        <p className="text-zinc-400 text-lg mb-12">
-          Set up your perfect game
-        </p>
+        <p className="text-zinc-400 text-lg mb-12">Set up your perfect game</p>
 
         {/* Game Creation Form */}
         <div className="space-y-8">
           {/* Player Count Input */}
           <div className="group bg-gradient-to-r from-zinc-900 to-zinc-800 rounded-xl p-6 border border-zinc-800 hover:border-[#98C23D]/50 transition-all">
-            <label className="block text-zinc-400 mb-2">Number of Players</label>
-            <input 
-              type="number" 
-              min="2" 
+            <label className="block text-zinc-400 mb-2">
+              Number of Players
+            </label>
+            <input
+              type="number"
+              min="2"
               max="8"
               className="w-full bg-zinc-900 text-[#98C23D] border border-zinc-700 rounded-lg px-4 py-3 focus:outline-none focus:border-[#98C23D] transition-all"
               placeholder="2-8 players"
@@ -52,9 +68,11 @@ export default function CreateGame() {
 
           {/* Initial Stake Input */}
           <div className="group bg-gradient-to-r from-zinc-900 to-zinc-800 rounded-xl p-6 border border-zinc-800 hover:border-[#98C23D]/50 transition-all">
-            <label className="block text-zinc-400 mb-2">Initial Stake ($)</label>
-            <input 
-              type="number" 
+            <label className="block text-zinc-400 mb-2">
+              Initial Stake ($)
+            </label>
+            <input
+              type="number"
               min="100"
               className="w-full bg-zinc-900 text-[#98C23D] border border-zinc-700 rounded-lg px-4 py-3 focus:outline-none focus:border-[#98C23D] transition-all"
               placeholder="Minimum $100"
@@ -63,8 +81,10 @@ export default function CreateGame() {
 
           {/* Game Mode Selection */}
           <div className="space-y-6">
-            <h3 className="text-white text-xl font-[var(--font-pixel)]">Select Game Mode</h3>
-            
+            <h3 className="text-white text-xl font-[var(--font-pixel)]">
+              Select Game Mode
+            </h3>
+
             {/* Video & Voice Option */}
             <div className="group cursor-pointer bg-gradient-to-r from-zinc-900 to-zinc-800 rounded-xl p-6 border border-zinc-800 hover:border-[#98C23D]/50 transition-all">
               <div className="flex items-center gap-4">
@@ -73,7 +93,9 @@ export default function CreateGame() {
                 </div>
                 <div>
                   <h4 className="text-white text-lg">Video & Voice</h4>
-                  <p className="text-zinc-400 text-sm">Full immersive experience with video and voice chat</p>
+                  <p className="text-zinc-400 text-sm">
+                    Full immersive experience with video and voice chat
+                  </p>
                 </div>
               </div>
             </div>
@@ -86,24 +108,33 @@ export default function CreateGame() {
                 </div>
                 <div>
                   <h4 className="text-white text-lg">AI Text Chat</h4>
-                  <p className="text-zinc-400 text-sm">Play with AI-powered chat for a unique experience</p>
+                  <p className="text-zinc-400 text-sm">
+                    Play with AI-powered chat for a unique experience
+                  </p>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Create Button */}
-          <button className="w-full bg-[#98C23D] hover:bg-[#88b22d] text-black text-lg px-8 py-4 rounded-lg font-medium 
-                         transition-all hover:scale-[1.02] hover:shadow-lg hover:shadow-[#98C23D]/20
-                         flex items-center justify-center gap-2 group">
+          <button
+            className="w-full bg-[#98C23D] hover:bg-[#88b22d] text-black text-lg px-8 py-4 rounded-lg font-medium 
+                           transition-all hover:scale-[1.02] hover:shadow-lg hover:shadow-[#98C23D]/20
+                           flex items-center justify-center gap-2 group"
+          >
             <span>Create Game</span>
-            <svg 
-              className="w-5 h-5 transform group-hover:translate-x-1 transition-transform" 
-              fill="none" 
-              viewBox="0 0 24 24" 
+            <svg
+              className="w-5 h-5 transform group-hover:translate-x-1 transition-transform"
+              fill="none"
+              viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7-7 7" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M14 5l7 7-7 7"
+              />
             </svg>
           </button>
         </div>
@@ -120,5 +151,5 @@ export default function CreateGame() {
         </div>
       </div>
     </div>
-  )
+  );
 }
