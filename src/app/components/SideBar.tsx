@@ -37,7 +37,7 @@ export function Sidebar() {
   const pathname = usePathname()
 
   return (
-    <div className="flex h-screen w-24 flex-col items-center border-r border-zinc-800 bg-zinc-950/95 py-8 backdrop-blur-sm ">
+    <div className="flex h-screen w-24 flex-col items-center border-r border-zinc-800 bg-zinc-950/95 py-8 backdrop-blur-sm  ">
       {/* Game Logo */}
       <div className="mb-8">
         <img src="/logo.png" alt="Liar's Poker" className="w-12 h-12" />

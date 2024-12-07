@@ -9,7 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@coinbase/onchainkit": "^0.35.8",
+    "@rainbow-me/rainbowkit": "^2.2.1",
     "@react-oauth/google": "^0.12.1",
+    "@thirdweb-dev/react": "^4.9.4",
+    "@thirdweb-dev/sdk": "^4.0.99",
+    "@wagmi/core": "^2.15.2",
     "clsx": "^2.1.1",
     "js-cookie": "^3.0.5",
     "next": "15.0.4",
@@ -20,6 +25,8 @@
     "react-icons": "^5.4.0",
     "react-router-dom": "^6.28.0",
     "tailwind-merge": "^2.5.5",
+    "viem": "^2.21.54",
+    "wagmi": "^2.13.4",
     "zustand": "^5.0.2"
   },
   "devDependencies": {

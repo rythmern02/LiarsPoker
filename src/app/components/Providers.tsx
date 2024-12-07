@@ -1,15 +1,16 @@
-// app/providers/SessionProviderComponent.tsx
-"use client"; // This line makes this component a Client Component
-
-import { SessionProvider } from "next-auth/react";
-
-interface Props {
-  children: React.ReactNode;
-  session: any; // Adjust type as needed based on your session structure
+'use client';
+ 
+import type { ReactNode } from 'react';
+import { OnchainKitProvider } from '@coinbase/onchainkit';
+import { base } from 'wagmi/chains'; // add baseSepolia for testing
+ 
+export function Providers(props: { children: ReactNode }) {
+  return (
+    <OnchainKitProvider
+      apiKey={process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY}
+      chain={base} // add baseSepolia for testing
+    >
+      {props.children}
+    </OnchainKitProvider>
+  );
 }
-
-const SessionProviderComponent = ({ children, session }: Props) => {
-  return <SessionProvider session={session}>{children}</SessionProvider>;
-};
-
-export default SessionProviderComponent;

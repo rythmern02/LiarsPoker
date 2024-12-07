@@ -1,8 +1,10 @@
+import '@coinbase/onchainkit/styles.css';
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Sidebar } from "./components/SideBar";
+import { Providers } from "./components/Providers";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -25,19 +27,19 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <GoogleOAuthProvider clientId={"201737013329-1vammkv48a66k8ijo8fq6p1e34veqe0g.apps.googleusercontent.com"}>
+      <Providers>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
           <div className="flex min-h-screen">
             <Sidebar />
-            <main className="flex-1">
-              {children}
-            </main>
+            <main className="flex-1">{children}</main>
           </div>
-        </GoogleOAuthProvider>
-      </body>
+        </body>
+      </Providers>
     </html>
   );
 }
+ 

@@ -1,4 +1,6 @@
 import { Press_Start_2P, Pixelify_Sans } from 'next/font/google'
+import Link from 'next/link';
+
 
 // Choose one of these font configurations
 const pixelFont = Press_Start_2P({
@@ -21,6 +23,7 @@ const FloatingNumber = ({ children, className }: { children: string, className: 
 );
 
 export default function LiarSpoker() {
+
   return (
     <div className={`min-h-screen bg-[#0A0A0A] ${pixelFont.variable}`}>
       {/* Floating Numbers Background */}
@@ -66,9 +69,11 @@ export default function LiarSpoker() {
 
           {/* CTA Buttons */}
           <div className="flex gap-6 mt-12">
+            <Link href="/choosegame">
             <button className="bg-[#98C23D] hover:bg-[#88b22d] text-black text-lg px-8 py-4 rounded-lg font-medium transition-all hover:scale-105 hover:shadow-lg hover:shadow-[#98C23D]/20">
               Play Now
             </button>
+            </Link>
             <button className="border border-zinc-700 hover:border-[#98C23D] text-white text-lg px-8 py-4 rounded-lg font-medium transition-all hover:bg-[#98C23D]/10">
               Learn Rules
             </button>
