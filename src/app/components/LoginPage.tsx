@@ -1,10 +1,10 @@
 import React, { useState } from "react";
+import { WalletDefault } from "@coinbase/onchainkit/wallet";
 
 function LoginPage() {
-     
- return (
+  return (
     <div>
-
+      <WalletDefault />
     </div>
   );
 }

@@ -1,4 +1,9 @@
+'use client';
 import { Press_Start_2P } from "next/font/google";
+import { useEthers } from '../../hooks/useEthers';
+import { ContractService } from '../../utils/contractService';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const pixelFont = Press_Start_2P({
   weight: "400",
@@ -22,6 +27,33 @@ const FloatingNumber = ({
 );
 
 export default function CreateGame() {
+  const router = useRouter();
+  const { signer } = useEthers();
+  const [playerCount, setPlayerCount] = useState(2);
+  const [entryFee, setEntryFee] = useState(100);
+  const [isCreating, setIsCreating] = useState(false);
+
+  const handleCreateGame = async () => {
+    if (!signer) return;
+    
+    try {
+      setIsCreating(true);
+      const contractService = new ContractService(signer);
+      const tx = await contractService.createRoom(entryFee);
+      const receipt = await tx.wait();
+      
+      // Get room ID from event
+      const event = receipt.events?.find((e: { event: string; }) => e.event === 'RoomCreated');
+      const roomId = event?.args?.roomId;
+      
+      router.push(`/gameplay/${roomId}`);
+    } catch (error) {
+      console.error('Error creating game:', error);
+    } finally {
+      setIsCreating(false);
+    }
+  };
+
   return (
     <div className={`min-h-screen bg-[#0A0A0A] ${pixelFont.variable}`}>
       {/* Background Elements */}
@@ -120,7 +152,7 @@ export default function CreateGame() {
           <button
             className="w-full bg-[#98C23D] hover:bg-[#88b22d] text-black text-lg px-8 py-4 rounded-lg font-medium 
                            transition-all hover:scale-[1.02] hover:shadow-lg hover:shadow-[#98C23D]/20
-                           flex items-center justify-center gap-2 group"
+                           flex items-center justify-center gap-2 group" onClick={handleCreateGame}
           >
             <span>Create Game</span>
             <svg

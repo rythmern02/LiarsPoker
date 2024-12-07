@@ -1,4 +1,9 @@
+'use client';
 import { Press_Start_2P } from "next/font/google";
+import { useEthers } from '../../hooks/useEthers';
+import { ContractService } from '../../utils/contractService';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 const pixelFont = Press_Start_2P({
   weight: "400",
@@ -6,35 +11,45 @@ const pixelFont = Press_Start_2P({
   variable: "--font-pixel",
 });
 
-// Sample game data (replace with your actual data)
-const games = [
-  {
-    id: 1,
-    name: "High Rollers Table",
-    players: 4,
-    maxPlayers: 6,
-    buyIn: "1000",
-    status: "In Progress",
-  },
-  {
-    id: 2,
-    name: "Casual Players",
-    players: 2,
-    maxPlayers: 4,
-    buyIn: "500",
-    status: "Waiting",
-  },
-  {
-    id: 3,
-    name: "Pro League",
-    players: 5,
-    maxPlayers: 6,
-    buyIn: "2000",
-    status: "In Progress",
-  },
-];
-
 export default function JoinBid() {
+  const router = useRouter();
+  const { signer } = useEthers();
+  const [games, setGames] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!signer) return;
+    
+    const loadGames = async () => {
+      try {
+        const contractService = new ContractService(signer);
+        // You'll need to implement a way to get active rooms
+        // This might require additional contract functions or events
+        // For now, we'll use mock data
+        setGames([]); // Replace with actual data
+      } catch (error) {
+        console.error('Error loading games:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadGames();
+  }, [signer]);
+
+  const handleJoinGame = async (roomId: number, buyIn: number) => {
+    if (!signer) return;
+    
+    try {
+      const contractService = new ContractService(signer);
+      const serialNumber = Math.floor(Math.random() * 1000000); // Generate random serial number
+      await contractService.joinRoom(roomId, serialNumber, buyIn);
+      router.push(`/gameplay/${roomId}`);
+    } catch (error) {
+      console.error('Error joining game:', error);
+    }
+  };
+
   return (
     <div className={`min-h-screen bg-[#0A0A0A] ${pixelFont.variable}`}>
       {/* Background Elements */}
@@ -51,7 +66,7 @@ export default function JoinBid() {
 
         {/* Games List */}
         <div className="space-y-6">
-          {games.map((game) => (
+          {games.map((game: any) => (
             <div
               key={game.id}
               className="group relative bg-gradient-to-r from-zinc-900 to-zinc-800 rounded-xl p-6 hover:scale-[1.02] transition-all duration-300 border border-zinc-800 hover:border-[#98C23D]/50"
@@ -90,6 +105,7 @@ export default function JoinBid() {
                   className="bg-[#98C23D] hover:bg-[#88b22d] text-black px-6 py-3 rounded-lg font-medium 
                              transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#98C23D]/20
                              flex items-center gap-2 group"
+                  onClick={() => handleJoinGame(game.id, parseInt(game.buyIn))}
                 >
                   <span>Join Table</span>
                   <svg

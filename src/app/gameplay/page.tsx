@@ -1,6 +1,11 @@
+'use client';
 import { Press_Start_2P } from 'next/font/google'
 import { FaMicrophone, FaVideo, FaVideoSlash, FaMicrophoneSlash } from 'react-icons/fa'
 import { BsChatDots } from 'react-icons/bs'
+import { useEthers } from '../../hooks/useEthers';
+import { ContractService } from '../../utils/contractService';
+import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 
 const pixelFont = Press_Start_2P({
   weight: '400',
@@ -17,6 +22,63 @@ const participants = [
 ]
 
 export default function GameplayPage() {
+  const { roomId } : any= useParams();
+  const { signer } : any= useEthers();
+  const [gameState, setGameState] = useState(null);
+  const [currentBid, setCurrentBid] = useState(null);
+  const [players, setPlayers] = useState([]);
+  const [currentTurn, setCurrentTurn] = useState(null);
+
+  useEffect(() => {
+    if (!signer || !roomId) return;
+
+    const contractService = new ContractService(signer);
+    const loadGameState = async () => {
+      try {
+        const [state, bid, turn, roomPlayers] = await Promise.all([
+          contractService.getRoomState(roomId),
+          contractService.getCurrentBid(roomId),
+          contractService.getCurrentTurn(roomId),
+          contractService.getRoomPlayers(roomId)
+        ]);
+
+        setGameState(state);
+        setCurrentBid(bid);
+        setCurrentTurn(turn);
+        setPlayers(roomPlayers);
+      } catch (error) {
+        console.error('Error loading game state:', error);
+      }
+    };
+
+    loadGameState();
+    // Set up event listeners for game updates
+    // ... implement event listeners ...
+
+  }, [signer, roomId]);
+
+  const handleMakeBid = async (digit: number, quantity: number) => {
+    if (!signer || !roomId) return;
+    
+    try {
+      const contractService = new ContractService(signer);
+      await contractService.makeBid(roomId, digit, quantity);
+    } catch (error) {
+      console.error('Error making bid:', error);
+    }
+  };
+
+  const handleCallLiar = async () => {
+    if (!signer || !roomId) return;
+    
+    try {
+      const contractService = new ContractService(signer);
+      await contractService.callLiar(roomId);
+    } catch (error) {
+      console.error('Error calling liar:', error);
+    }
+  };
+
   return (
     <div className={`min-h-screen bg-[#0A0A0A] ${pixelFont.variable} text-white relative`}>
       {/* Background Grid */}
