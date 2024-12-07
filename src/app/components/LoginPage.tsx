@@ -3,12 +3,12 @@ import { useOkto } from "okto-sdk-react";
 import { GoogleLogin } from "@react-oauth/google";
 
 function LoginPage() {
-    const okto = useOkto();
+    const okto: any = useOkto();
     const [authToken, setAuthToken] = useState<string | null>(null);
 
     const handleGoogleLogin: any = async (credentialResponse: { credential: string }) => {
         const idToken = credentialResponse.credential;
-        okto?.authenticate(idToken, (authResponse, error) => {
+        okto?.authenticate(idToken, (authResponse: { auth_token: React.SetStateAction<string | null>; }, error: any) => {
       if (authResponse) {
         setAuthToken(authResponse.auth_token);
         console.log("Authenticated successfully, auth token:", authResponse.auth_token);
@@ -18,9 +18,14 @@ function LoginPage() {
     });
  };
 
+ const getwalletdetails = async () => {
+    const wallet = await okto?.getUserDetails();
+    console.log(wallet);
+ }
+
  return (
     <div>
-        <h1>Login</h1>
+        <h1 onClick={getwalletdetails}>Login</h1>
         {!authToken ? (
         <GoogleLogin
             onSuccess={handleGoogleLogin}
