@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { Sidebar } from "./components/SideBar";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -26,15 +27,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <GoogleOAuthProvider
-          clientId={
-            "201737013329-1vammkv48a66k8ijo8fq6p1e34veqe0g.apps.googleusercontent.com"
-          }
-        >
-          {children}
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <GoogleOAuthProvider clientId={"201737013329-1vammkv48a66k8ijo8fq6p1e34veqe0g.apps.googleusercontent.com"}>
+          <div className="flex min-h-screen">
+            <Sidebar />
+            <main className="flex-1">
+              {children}
+            </main>
+          </div>
         </GoogleOAuthProvider>
       </body>
     </html>
