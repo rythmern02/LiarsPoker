@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../lib/auth";
 import Provider from "./components/OktoAuthProvider";
 
 const geistSans = localFont({
@@ -27,7 +26,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  const session = getServerSession(authOptions);
 
   return (
     <html lang="en">
