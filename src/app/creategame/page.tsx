@@ -29,26 +29,38 @@ const FloatingNumber = ({
 export default function CreateGame() {
   const router = useRouter();
   const { signer } = useEthers();
-  const [playerCount, setPlayerCount] = useState(2);
-  const [entryFee, setEntryFee] = useState(100);
+  const [playerCount, setPlayerCount] : any = useState(2);
+  const [entryFee, setEntryFee]: any = useState(100);
   const [isCreating, setIsCreating] = useState(false);
+  const [gameMode, setGameMode] = useState<'video' | 'ai'>('video');
 
   const handleCreateGame = async () => {
-    if (!signer) return;
+    if (!signer) {
+      alert('Please connect your wallet first');
+      return;
+    }
     
     try {
       setIsCreating(true);
       const contractService = new ContractService(signer);
-      const tx = await contractService.createRoom(entryFee);
-      const receipt = await tx.wait();
+      
+      // Create room with player count and entry fee
+      const tx = await contractService.createRoom(playerCount);
+      const receipt = await tx;
       
       // Get room ID from event
       const event = receipt.events?.find((e: { event: string; }) => e.event === 'RoomCreated');
       const roomId = event?.args?.roomId;
       
+      if (!roomId) {
+        throw new Error('Failed to get room ID');
+      }
+
+      // Redirect to the gameplay page with the new room ID
       router.push(`/gameplay/${roomId}`);
     } catch (error) {
       console.error('Error creating game:', error);
+      alert('Failed to create game. Please try again.');
     } finally {
       setIsCreating(false);
     }
@@ -93,6 +105,8 @@ export default function CreateGame() {
               type="number"
               min="2"
               max="8"
+              value={playerCount}
+              onChange={(e) => setPlayerCount(Math.min(8, Math.max(2, parseInt(e.target.value))))}
               className="w-full bg-zinc-900 text-[#98C23D] border border-zinc-700 rounded-lg px-4 py-3 focus:outline-none focus:border-[#98C23D] transition-all"
               placeholder="2-8 players"
             />
@@ -106,6 +120,8 @@ export default function CreateGame() {
             <input
               type="number"
               min="100"
+              value={entryFee}
+              onChange={(e) => setEntryFee(Math.max(100, parseInt(e.target.value)))}
               className="w-full bg-zinc-900 text-[#98C23D] border border-zinc-700 rounded-lg px-4 py-3 focus:outline-none focus:border-[#98C23D] transition-all"
               placeholder="Minimum $100"
             />
@@ -118,10 +134,13 @@ export default function CreateGame() {
             </h3>
 
             {/* Video & Voice Option */}
-            <div className="group cursor-pointer bg-gradient-to-r from-zinc-900 to-zinc-800 rounded-xl p-6 border border-zinc-800 hover:border-[#98C23D]/50 transition-all">
+            <div 
+              onClick={() => setGameMode('video')}
+              className="group cursor-pointer bg-gradient-to-r from-zinc-900 to-zinc-800 rounded-xl p-6 border border-zinc-800 hover:border-[#98C23D]/50 transition-all"
+            >
               <div className="flex items-center gap-4">
                 <div className="w-6 h-6 rounded-full border-2 border-[#98C23D] flex items-center justify-center">
-                  <div className="w-3 h-3 rounded-full bg-[#98C23D]" />
+                  <div className={`w-3 h-3 rounded-full ${gameMode === 'video' ? 'bg-[#98C23D]' : 'bg-transparent'}`} />
                 </div>
                 <div>
                   <h4 className="text-white text-lg">Video & Voice</h4>
@@ -133,10 +152,13 @@ export default function CreateGame() {
             </div>
 
             {/* AI Text Chat Option */}
-            <div className="group cursor-pointer bg-gradient-to-r from-zinc-900 to-zinc-800 rounded-xl p-6 border border-zinc-800 hover:border-[#98C23D]/50 transition-all">
+            <div 
+              onClick={() => setGameMode('ai')}
+              className="group cursor-pointer bg-gradient-to-r from-zinc-900 to-zinc-800 rounded-xl p-6 border border-zinc-800 hover:border-[#98C23D]/50 transition-all"
+            >
               <div className="flex items-center gap-4">
                 <div className="w-6 h-6 rounded-full border-2 border-zinc-700 flex items-center justify-center">
-                  <div className="w-3 h-3 rounded-full bg-transparent" />
+                  <div className={`w-3 h-3 rounded-full ${gameMode === 'ai' ? 'bg-[#98C23D]' : 'bg-transparent'}`} />
                 </div>
                 <div>
                   <h4 className="text-white text-lg">AI Text Chat</h4>
@@ -150,24 +172,29 @@ export default function CreateGame() {
 
           {/* Create Button */}
           <button
-            className="w-full bg-[#98C23D] hover:bg-[#88b22d] text-black text-lg px-8 py-4 rounded-lg font-medium 
-                           transition-all hover:scale-[1.02] hover:shadow-lg hover:shadow-[#98C23D]/20
-                           flex items-center justify-center gap-2 group" onClick={handleCreateGame}
+            onClick={handleCreateGame}
+            disabled={isCreating}
+            className={`w-full bg-[#98C23D] hover:bg-[#88b22d] text-black text-lg px-8 py-4 rounded-lg font-medium 
+                       transition-all hover:scale-[1.02] hover:shadow-lg hover:shadow-[#98C23D]/20
+                       flex items-center justify-center gap-2 group
+                       ${isCreating ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
-            <span>Create Game</span>
-            <svg
-              className="w-5 h-5 transform group-hover:translate-x-1 transition-transform"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M14 5l7 7-7 7"
-              />
-            </svg>
+            <span>{isCreating ? 'Creating Game...' : 'Create Game'}</span>
+            {!isCreating && (
+              <svg
+                className="w-5 h-5 transform group-hover:translate-x-1 transition-transform"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M14 5l7 7-7 7"
+                />
+              </svg>
+            )}
           </button>
         </div>
 
