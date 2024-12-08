@@ -1,8 +1,8 @@
 # Liar's Poker Game 🎲💸
 
-Welcome to **Liar's Poker**, an exciting, decentralized game of bluffing, bidding, and strategy based on **Ethereum smart contracts**! This is the Web3 version of the classic **Liar’s Poker**, where players receive random notes with serial numbers and bid on the occurrence of numbers, trying to bluff and challenge each other to win the pool or lose based on their claims.
+Welcome to **Liar's Poker**, an exciting, decentralized game of bluffing, bidding, and strategy based on **Base smart contracts**! This is the Web3 version of the classic **Liar’s Poker**, where players receive random notes with serial numbers and bid on the occurrence of numbers, trying to bluff and challenge each other to win the pool or lose based on their claims.
 
-This game leverages the **Sepolia testnet** and a smart contract deployed on the **Sepolia network**.
+This game leverages the **Base Sepolia testnet** and a smart contract deployed on the **Base Sepolia network**.
 
 ---
 
